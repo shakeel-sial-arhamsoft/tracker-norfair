@@ -4,7 +4,7 @@ from typing import List
 import time
 import numpy as np
 from draw import center, draw
-from yolo import yolo_ultralytics_detections_to_norfair_detections
+from yolo import yolo_ultralytics_detections_to_norfair_detections,tracker_to_input
 from ultralytics import YOLO
 
 from norfair import AbsolutePaths, Paths, Tracker, Video
@@ -53,26 +53,34 @@ def inference(
         frame_count += 1
         print("frame no:", frame_count)
 
-        yolo_detections = model.predict(
-            frame,
-            # conf_threshold=model_threshold,
-            # iou_threshold=0.45,
-            # image_size=720,
-            # classes=classes,
-        )
+        if  frame_count == 1 or  frame_count % 3 == 0:
 
-        mask = np.ones(frame.shape[:2], frame.dtype)
+            yolo_detections = model.predict(
+                frame,
+                # conf_threshold=model_threshold,
+                # iou_threshold=0.45,
+                # image_size=720,
+                # classes=classes,
+            )
 
-        coord_transformations = motion_estimator.update(frame, mask)
-        # pdb.set_trace()
-        detections = yolo_ultralytics_detections_to_norfair_detections(
-            yolo_detections, track_points=track_points
-        )
+
+
+            mask = np.ones(frame.shape[:2], frame.dtype)
+
+            coord_transformations = motion_estimator.update(frame, mask)
+            # pdb.set_trace()
+            detections = yolo_ultralytics_detections_to_norfair_detections(
+                yolo_detections, track_points=track_points
+            )
+        else:
+            detections = tracker_to_input(tracked_objects)
 
         tracked_objects = tracker.update(
             detections=detections, coord_transformations=coord_transformations,
             period=15
         )
+        # points_detected = tracker_to_input(tracked_objects)
+
 
         frame = draw(
             paths_drawer,
@@ -91,7 +99,7 @@ def inference(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Track objects in a video.")
     parser.add_argument(
-        "--files", type=str, default="vid2.mp4", help="Video files to process")
+        "--files", type=str, default="vid2_10s.mp4", help="Video files to process")
     parser.add_argument(
         "--detector-path", type=str, default="yolov7.pt", help="YOLOv7 model path"
     )

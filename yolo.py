@@ -108,3 +108,20 @@ def yolo_ultralytics_detections_to_norfair_detections(
             norfair_detections.append(Detection(points=bbox, scores=scores))
 
     return norfair_detections
+
+
+def tracker_to_input(
+    yolo_detections: torch.tensor, track_points: str = "bbox"  # bbox or centroid
+) -> List[Detection]:
+    """convert detections_as_xywh to norfair detections"""
+    norfair_detections: List[Detection] = []
+    # pdb.set_trace()
+    for one_object in yolo_detections:
+
+        points = one_object.estimate
+        scores = np.array(
+            [0.99, 0.99]
+        )
+        norfair_detections.append(Detection(points=points, scores=scores))
+
+    return norfair_detections

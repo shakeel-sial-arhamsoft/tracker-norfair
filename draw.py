@@ -12,10 +12,10 @@ def draw(
     coord_transformations,
     fix_paths,
 ):
-    if track_points == "centroid":
-        norfair.draw_points(frame, detections)
-        norfair.draw_tracked_objects(frame, tracked_objects)
-    elif track_points == "bbox":
+    # if track_points == "centroid":
+    #     norfair.draw_points(frame, detections)
+    #     norfair.draw_tracked_objects(frame, tracked_objects)
+    if track_points == "bbox":
         # norfair.draw_boxes(frame, detections)
         norfair.draw_tracked_boxes(frame, tracked_objects)
 
