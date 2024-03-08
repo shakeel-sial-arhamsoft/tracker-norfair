@@ -105,6 +105,7 @@ def yolo_ultralytics_detections_to_norfair_detections(
             scores = np.array(
                 [conf.item(), conf.item()]
             )
+            print(scores)
             norfair_detections.append(Detection(points=bbox, scores=scores))
 
     return norfair_detections
@@ -122,6 +123,7 @@ def tracker_to_input(
         scores = np.array(
             [0.99, 0.99]
         )
+        print("tracker:",scores)
         norfair_detections.append(Detection(points=points, scores=scores))
 
     return norfair_detections

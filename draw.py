@@ -19,10 +19,10 @@ def draw(
         # norfair.draw_boxes(frame, detections)
         norfair.draw_tracked_boxes(frame, tracked_objects)
 
-    if fix_paths:
-        frame = paths_drawer.draw(frame, tracked_objects, coord_transformations)
-    elif paths_drawer is not None:
-        frame = paths_drawer.draw(frame, tracked_objects)
+    # if fix_paths:
+    #     frame = paths_drawer.draw(frame, tracked_objects, coord_transformations)
+    # elif paths_drawer is not None:
+    #     frame = paths_drawer.draw(frame, tracked_objects)
 
     return frame
 

@@ -40,8 +40,8 @@ def inference(
     tracker = Tracker(
         distance_function=distance_function,
         distance_threshold=distance_threshold,
-        past_detections_length=1,
-        hit_counter_max= 1
+        past_detections_length=5,
+        hit_counter_max= 5
     )
 
     paths_drawer = Paths(center, attenuation=0.01)
@@ -53,7 +53,7 @@ def inference(
         frame_count += 1
         print("frame no:", frame_count)
 
-        if  frame_count == 1 or  frame_count % 3 == 0:
+        if frame_count == 1 or frame_count % 5 == 0:
 
             yolo_detections = model.predict(
                 frame,
@@ -65,23 +65,26 @@ def inference(
 
 
 
-            mask = np.ones(frame.shape[:2], frame.dtype)
+            # mask = np.ones(frame.shape[:2], frame.dtype)
 
-            coord_transformations = motion_estimator.update(frame, mask)
+            # coord_transformations = motion_estimator.update(frame, mask)
             # pdb.set_trace()
             detections = yolo_ultralytics_detections_to_norfair_detections(
                 yolo_detections, track_points=track_points
             )
         else:
-            detections = tracker_to_input(tracked_objects)
+            # mask = np.ones(frame.shape[:2], frame.dtype)
+            # coord_transformations = motion_estimator.update(frame, mask)
+
+            # detections = tracker_to_input(tracked_objects)
+            detections = None
 
         tracked_objects = tracker.update(
-            detections=detections, coord_transformations=coord_transformations,
-            period=15
+            detections=detections, #coord_transformations=coord_transformations,
+            period=5
         )
         # points_detected = tracker_to_input(tracked_objects)
-
-
+        print(tracked_objects)
         frame = draw(
             paths_drawer,
             track_points,
