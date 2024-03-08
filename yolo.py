@@ -91,11 +91,14 @@ def yolo_ultralytics_detections_to_norfair_detections(
     norfair_detections: List[Detection] = []
 
     if track_points == "bbox":
-        # pdb.set_trace()
         detections_as_xyxy = yolo_detections[0].boxes.xyxy
         detections_as_conf = yolo_detections[0].boxes.conf
+        detections_as_cls = yolo_detections[0].boxes.cls
+        cls_names = yolo_detections[0].names
+        # pdb.set_trace()
+
         # detections_as_xyxy.cpu().detach().numpy()
-        for box, conf in zip(detections_as_xyxy, detections_as_conf):
+        for box, conf, cls in zip(detections_as_xyxy, detections_as_conf, detections_as_cls):
             bbox = np.array(
                 [
                     [box[0].item(), box[1].item()],
@@ -105,8 +108,8 @@ def yolo_ultralytics_detections_to_norfair_detections(
             scores = np.array(
                 [conf.item(), conf.item()]
             )
-            print(scores)
-            norfair_detections.append(Detection(points=bbox, scores=scores))
+            # print(scores)
+            norfair_detections.append(Detection(points=bbox, scores=scores, label=cls_names[int(cls)]))
 
     return norfair_detections
 

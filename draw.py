@@ -17,7 +17,7 @@ def draw(
     #     norfair.draw_tracked_objects(frame, tracked_objects)
     if track_points == "bbox":
         # norfair.draw_boxes(frame, detections)
-        norfair.draw_tracked_boxes(frame, tracked_objects)
+        norfair.draw_tracked_boxes(frame, tracked_objects, draw_labels=True)
 
     # if fix_paths:
     #     frame = paths_drawer.draw(frame, tracked_objects, coord_transformations)
