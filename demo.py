@@ -24,6 +24,7 @@ def inference(
     # pdb.set_trace()
     # model = YOLO(model, device='cpu')
     model = YOLO('yolov8l-world.pt')
+    model.set_classes(['person', 'bicycle', 'car', 'motorcycle',  'airplane', 'bus', 'train', 'truck', 'boat', 'traffic light', 'fire hydrant', 'stop sign',  'parking meter',  'bench',  'bird',  'cat',  'dog',  'horse',  'sheep',  'cow',  'elephant',  'bear',  'zebra',  'giraffe',  'backpack',  'umbrella',  'handbag',  'tie',  'suitcase',  'frisbee',  'skis',  'snowboard',  'sports ball',  'kite',  'baseball bat',  'baseball glove',  'skateboard',  'surfboard',  'tennis racket',  'bottle',  'wine glass',  'cup',  'fork',  'knife',  'spoon',  'bowl',  'banana',  'apple',  'sandwich',  'orange',  'broccoli',  'carrot',  'hot dog',  'pizza',  'donut',  'cake',  'chair',  'couch',  'potted plant',  'bed',  'dining table',  'toilet',  'tv',  'laptop',  'mouse', 'remote', 'keyboard', 'cell phone', 'microwave', 'oven', 'toaster', 'sink', 'refrigerator', 'book', 'clock', 'vase', 'scissors', 'teddy bear', 'hair drier', 'toothbrush', 'shoes', 'boots', 'glasses'])
     video = Video(input_path=input_video)
 
     transformations_getter = HomographyTransformationGetter()
@@ -53,7 +54,7 @@ def inference(
         frame_count += 1
         print("frame no:", frame_count)
 
-        if frame_count == 1 or frame_count % 5 == 0:
+        if frame_count == 1 or frame_count % 6 == 0:
 
             yolo_detections = model.predict(
                 frame,
@@ -102,7 +103,7 @@ def inference(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Track objects in a video.")
     parser.add_argument(
-        "--files", type=str, default="vid2_10s.mp4", help="Video files to process")
+        "--files", type=str, default="sample_10s.mp4", help="Video files to process")
     parser.add_argument(
         "--detector-path", type=str, default="yolov7.pt", help="YOLOv7 model path"
     )

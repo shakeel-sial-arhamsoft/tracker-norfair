@@ -99,6 +99,8 @@ def yolo_ultralytics_detections_to_norfair_detections(
 
         # detections_as_xyxy.cpu().detach().numpy()
         for box, conf, cls in zip(detections_as_xyxy, detections_as_conf, detections_as_cls):
+            if conf.item() < 0.5:
+                continue
             bbox = np.array(
                 [
                     [box[0].item(), box[1].item()],
